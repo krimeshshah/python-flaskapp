@@ -1,27 +1,19 @@
-@Library('my-shared-library') _
+@Library('my-shared-library@feature/ks/jenkins-minikube') _
 
 pipeline {
-    agent {
-        kubernetes {
-            label 'kaniko'
-            defaultContainer 'jnlp'
-        }
-    }
 
-    environment {
-        IMAGE = "123456789012.dkr.ecr.eu-west-1.amazonaws.com/flask-app"
-        TAG   = "${BUILD_NUMBER}"
-        NAMESPACE = "qa"
-    }
+    agent { label 'k8s-agent' }
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
-                kanikoBuild(
-                    image: IMAGE,
-                    tag: TAG
+
+                qaBuild(
+                    repoUrl: 'https://github.com/krimeshshah/python-flaskapp.git',
+                    imageRepo: 'localhost:5000/python-flaskapp'
                 )
+
             }
         }
 
@@ -37,5 +29,7 @@ pipeline {
                 """
             }
         }
+
     }
+
 }
