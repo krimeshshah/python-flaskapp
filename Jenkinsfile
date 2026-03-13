@@ -11,7 +11,7 @@ pipeline {
 
                 qaBuild(
                     repoUrl: 'https://github.com/krimeshshah/python-flaskapp.git',
-                    imageRepo: 'localhost:5000/python-flaskapp'
+                    imageRepo: 'registry.kube-system:5000/python-flaskapp'
                 )
 
             }
